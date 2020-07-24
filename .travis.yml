@@ -8,7 +8,7 @@ branches:
 
 # Install terraform
 before_install:
-  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.1/terraform_0.12.1_linux_amd64.zip
   - unzip /tmp/terraform.zip -d /tmp
   - mv /tmp/terraform ~/bin
   - env
