@@ -1,4 +1,4 @@
-language: minimal
+language: go
 dist: focal
 sudo: false
 
@@ -8,13 +8,10 @@ branches:
 
 # Install terraform
 before_install:
-  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.1/terraform_0.12.1_linux_amd64.zip
+  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
   - unzip /tmp/terraform.zip -d /tmp
   - mv /tmp/terraform ~/bin
-  - env
   - export PATH="~/bin:$PATH"
   - curl https://raw.githubusercontent.com/sougat818/terraform-plugin-installer/master/install.sh | bash -s -- https://github.com/Mongey/terraform-provider-confluentcloud 17c01e8598f9c266efd1b8938d88b889a5d841ae
-
-
 
 script: terraform plan ./confluent-cloud-deploy/dev
