@@ -19,5 +19,8 @@ before_install:
   - mv /tmp/terraform ~/bin
   - env
   - export PATH="~/bin:$PATH"
+  - curl https://raw.githubusercontent.com/samstav/terraform-plugin-installer/master/install.sh | bash -s -- https://github.com/Mongey/terraform-provider-confluentcloud
+
+
 
 script: terraform plan ./confluent-cloud-deploy/dev
