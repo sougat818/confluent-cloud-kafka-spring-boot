@@ -11,8 +11,3 @@ resource "confluentcloud_kafka_cluster" "dev" {
   availability     = "LOW"
   environment_id   = confluentcloud_environment.environment.id
 }
-
-resource "confluentcloud_api_key" "provider_dev" {
-  cluster_id     = confluentcloud_kafka_cluster.test.id
-  environment_id = confluentcloud_environment.environment.id
-}
