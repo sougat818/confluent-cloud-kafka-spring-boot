@@ -13,7 +13,7 @@ before_install:
   - mv /tmp/terraform ~/bin
   - env
   - export PATH="~/bin:$PATH"
-  - curl https://raw.githubusercontent.com/samstav/terraform-plugin-installer/master/install.sh | bash -s -- https://github.com/Mongey/terraform-provider-confluentcloud
+  - curl https://raw.githubusercontent.com/sougat818/terraform-plugin-installer/master/install.sh | bash -s -- https://github.com/Mongey/terraform-provider-confluentcloud
 
 
 
