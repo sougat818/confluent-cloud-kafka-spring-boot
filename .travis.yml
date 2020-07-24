@@ -1,9 +1,9 @@
-language: generic
+language: go
 dist: focal
 os: linux
 
 go:
-- "1.14"
+- "1.12"
 
 branches:
   only:
