@@ -21,10 +21,10 @@ jobs:
       if: type IN (pull_request)
       script:
         - echo "Executing Terraform Plan on pull request code"
-        - docker run -e --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest plan /workspace/confluent-cloud-deploy/dev
+        - docker run -e CONFLUENT_CLOUD_USERNAME=$CONFLUENT_CLOUD_USERNAME -e CONFLUENT_CLOUD_PASSWORD=$CONFLUENT_CLOUD_PASSWORD --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest plan /workspace/confluent-cloud-deploy/dev
     - stage: terraform apply
       # Only run terraform apply stage if outside of a pull request
       if: type IN (push) and branch = master
       script:
         - echo "Executing Terraform Apply on merged code"
-        - docker run -e --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest apply /workspace/confluent-cloud-deploy/dev
+        - docker run -e CONFLUENT_CLOUD_USERNAME=$CONFLUENT_CLOUD_USERNAME -e CONFLUENT_CLOUD_PASSWORD=$CONFLUENT_CLOUD_PASSWORD --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest apply /workspace/confluent-cloud-deploy/dev
