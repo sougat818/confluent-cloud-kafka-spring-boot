@@ -5,19 +5,17 @@ os: linux
 go:
 - "1.14.6"
 
+services:
+  - docker
+
 branches:
   only:
     - master
 
 # Install terraform
 before_install:
-  - go version
-  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-  - unzip /tmp/terraform.zip -d /tmp
-  - mv /tmp/terraform ~/bin
-  - export PATH="~/bin:$PATH"
-  - curl https://raw.githubusercontent.com/sougat818/terraform-plugin-installer/master/install.sh | bash -s -- https://github.com/Mongey/terraform-provider-confluentcloud 17c01e8598f9c266efd1b8938d88b889a5d841ae
-
+  - docker run --name terraform -v ${PWD}:/workspace -w /workspace  --entrypoint /workspace/scripts/init.sh hashicorp/terraform:light 
+  
 jobs:
   include:
     - stage: terraform plan
@@ -25,13 +23,10 @@ jobs:
       if: type IN (pull_request)
       script:
         - echo "Executing Terraform Plan on pull request code"
-        - terraform init ./confluent-cloud-deploy/dev
-        - terraform validate ./confluent-cloud-deploy/dev
-        - terraform plan ./confluent-cloud-deploy/dev
+        - docker run --name terraform -v ${PWD}:/workspace -w /workspace hashicorp/terraform:light plan ./confluent-cloud-deploy/dev/
     - stage: terraform apply
       # Only run terraform apply stage if outside of a pull request
       if: type IN (push) and branch = master
       script:
         - echo "Executing Terraform Apply on merged code"
-        - terraform init ./confluent-cloud-deploy/dev
-        - terraform apply ./confluent-cloud-deploy/dev
+        - docker run --name terraform -v ${PWD}:/workspace -w /workspace hashicorp/terraform:light apply ./confluent-cloud-deploy/dev/
