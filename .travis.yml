@@ -1,9 +1,6 @@
-language: go
+language: generic
 dist: focal
 os: linux
-
-go:
-- "1.14.6"
 
 services:
   - docker
@@ -14,8 +11,7 @@ branches:
 
 # Install terraform
 before_install:
-  - cd confluent-cloud-deploy
-  - docker build . -t terraform
+  - docker build ./confluent-cloud-deploy -t terraform
   - docker run --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest init /workspace/confluent-cloud-deploy/dev
 
 jobs:
