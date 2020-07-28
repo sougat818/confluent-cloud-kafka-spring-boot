@@ -27,4 +27,4 @@ jobs:
       if: type IN (push) and branch = master
       script:
         - echo "Executing Terraform Apply on merged code"
-        - docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e CONFLUENT_CLOUD_USERNAME=$CONFLUENT_CLOUD_USERNAME -e CONFLUENT_CLOUD_PASSWORD=$CONFLUENT_CLOUD_PASSWORD --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest apply /workspace/confluent-cloud-deploy/dev
+        - docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e CONFLUENT_CLOUD_USERNAME=$CONFLUENT_CLOUD_USERNAME -e CONFLUENT_CLOUD_PASSWORD=$CONFLUENT_CLOUD_PASSWORD --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest apply -input=false /workspace/confluent-cloud-deploy/dev
