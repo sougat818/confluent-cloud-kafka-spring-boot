@@ -14,8 +14,10 @@ branches:
 
 # Install terraform
 before_install:
-  - docker run --name terraform -v ${PWD}:/workspace -w /workspace  --entrypoint /workspace/scripts/init.sh hashicorp/terraform:light 
-  
+  - cd confluent-cloud-deploy
+  - docker build . -t terraform
+  - docker run --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest init /workspace/confluent-cloud-deploy/dev
+
 jobs:
   include:
     - stage: terraform plan
@@ -23,10 +25,10 @@ jobs:
       if: type IN (pull_request)
       script:
         - echo "Executing Terraform Plan on pull request code"
-        - docker run -e --name terraform -v ${PWD}:/workspace -w /workspace hashicorp/terraform:light plan ./confluent-cloud-deploy/dev/
+        - docker run --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest plan /workspace/confluent-cloud-deploy/dev
     - stage: terraform apply
       # Only run terraform apply stage if outside of a pull request
       if: type IN (push) and branch = master
       script:
         - echo "Executing Terraform Apply on merged code"
-        - docker run -e --name terraform -v ${PWD}:/workspace -w /workspace hashicorp/terraform:light apply ./confluent-cloud-deploy/dev/
+        - docker run --rm --name terraform -v ${PWD}:/workspace -w /workspace  terraform:latest apply /workspace/confluent-cloud-deploy/dev
