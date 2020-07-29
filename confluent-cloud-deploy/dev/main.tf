@@ -2,6 +2,7 @@ provider "aws" {
   region = "ap-southeast-2"
 }
 
+#import -config=/workspace/confluent-cloud-deploy/dev  aws_s3_bucket.terraform_state sougat818-confluent-cloud-aws-terraform-state
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "sougat818-confluent-cloud-aws-terraform-state"
   versioning {
@@ -16,6 +17,7 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 }
 
+#import -config=/workspace/confluent-cloud-deploy/dev  aws_dynamodb_table.terraform_locks sougat818-confluent-cloud-aws-terraform-state-locks
 resource "aws_dynamodb_table" "terraform_locks" {
   name         = "sougat818-confluent-cloud-aws-terraform-state-locks"
   billing_mode = "PAY_PER_REQUEST"
