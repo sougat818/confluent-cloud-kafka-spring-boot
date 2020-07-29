@@ -1,0 +1,55 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetAccessPoint",
+                "s3:PutAccountPublicAccessBlock",
+                "dynamodb:ListTables",
+                "s3:ListAccessPoints",
+                "dynamodb:ListBackups",
+                "secretsmanager:CreateSecret",
+                "s3:ListJobs",
+                "dynamodb:PurchaseReservedCapacityOfferings",
+                "dynamodb:ListStreams",
+                "dynamodb:ListContributorInsights",
+                "secretsmanager:GetRandomPassword",
+                "dynamodb:DescribeReservedCapacityOfferings",
+                "s3:GetAccountPublicAccessBlock",
+                "dynamodb:ListGlobalTables",
+                "s3:ListAllMyBuckets",
+                "dynamodb:DescribeReservedCapacity",
+                "s3:CreateJob",
+                "s3:HeadBucket",
+                "dynamodb:DescribeLimits",
+                "secretsmanager:ListSecrets"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "secretsmanager:*",
+            "Resource": "arn:aws:secretsmanager:ap-southeast-2:439904798018:secret:confluent_cloud-HPCUM6"
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:*:*:accesspoint/*",
+                "arn:aws:s3:::*/*",
+                "arn:aws:s3:*:*:job/*",
+                "arn:aws:s3:::sougat818-confluent-cloud-aws-terraform-state"
+            ]
+        },
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": "dynamodb:*",
+            "Resource": "arn:aws:dynamodb:ap-southeast-2:439904798018:table/sougat818-confluent-cloud-aws-terraform-state-locks"
+        }
+    ]
+}
