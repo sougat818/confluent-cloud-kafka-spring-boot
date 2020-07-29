@@ -28,6 +28,18 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 }
 
+#import -config=/workspace/confluent-cloud-deploy/dev aws_secretsmanager_secret.confluent_cloud arn:aws:secretsmanager:ap-southeast-2:439904798018:secret:confluent_cloud-HPCUM6
+
+resource "aws_secretsmanager_secret" "confluent_cloud" {
+  name = "confluent_cloud"
+  recovery_window_in_days = 30
+  description = "key and secret for confluent cloud with cluster creation access"
+}
+
+data "aws_secretsmanager_secret_version" "confluent_cloud" {
+  secret_id = "${aws_secretsmanager_secret.confluent_cloud.id}"
+}
+
 terraform {
   backend "s3" {
     bucket         = "sougat818-confluent-cloud-aws-terraform-state"
@@ -39,7 +51,10 @@ terraform {
   }
 }
 
-provider "confluentcloud" {}
+provider "confluentcloud" {
+    username = jsondecode(data.aws_secretsmanager_secret_version.confluent_cloud.secret_string)["confluent_cloud_key"]
+    password = jsondecode(data.aws_secretsmanager_secret_version.confluent_cloud.secret_string)["confluent_cloud_secret"]
+}
 
 resource "confluentcloud_environment" "environment" {
   name = "dev"
@@ -51,4 +66,10 @@ resource "confluentcloud_kafka_cluster" "dev" {
   region           = "ap-southeast-2"
   availability     = "LOW"
   environment_id   = confluentcloud_environment.environment.id
+  deployment       = {
+                       "sku" = "BASIC"
+                     }
+  network_egress   = 100
+  network_ingress  = 100
+  storage          = 5000
 }
