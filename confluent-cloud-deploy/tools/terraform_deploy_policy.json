@@ -3,13 +3,6 @@
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": [
-                "secretsmanager:CreateSecret"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
             "Action": "secretsmanager:*",
             "Resource": "arn:aws:secretsmanager:ap-southeast-2:439904798018:secret:confluent_cloud-HPCUM6"
         },
