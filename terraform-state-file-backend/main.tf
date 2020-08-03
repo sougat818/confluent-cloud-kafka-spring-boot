@@ -65,8 +65,8 @@ resource "aws_dynamodb_table" "terraform_locks" {
 //    "confluent_cloud_secret": "XXXX"
 //  }
 resource "aws_secretsmanager_secret" "confluent_cloud" {
-  name = "github-sougat818-confluent-cloud"
-  recovery_window_in_days = 30
+  name = "github-sougat818-confluent-cloud-admin"
+  recovery_window_in_days = 0
   description = "key and secret for confluent cloud with cluster creation access"
   tags = merge(
   var.default_tags,
