@@ -1,5 +1,6 @@
 provider "aws" {
   region = "ap-southeast-2"
+  version = "~> 3.0"
 }
 
 variable "default_tags" {
@@ -19,13 +20,11 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
   ignore_public_acls = true
 }
 
-#import -config=/workspace/confluent-cloud-deploy/dev  aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "github-sougat818-confluent-cloud-aws-terraform-state"
   versioning {
     enabled = true
   }
-
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -39,9 +38,17 @@ resource "aws_s3_bucket" "terraform_state" {
     Env = "dev"
   },
   )
+
+  # This import limitation causes false positives on updates required. Ignoring these fields for now.
+  # https://github.com/terraform-providers/terraform-provider-aws/issues/6193
+  lifecycle {
+    ignore_changes = [
+      acl,
+      force_destroy
+    ]
+  }
 }
 
-#import -config=/workspace/confluent-cloud-deploy/dev  aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks
 resource "aws_dynamodb_table" "terraform_locks" {
   name = "github-sougat818-confluent-cloud-aws-terraform-state-locks"
   billing_mode = "PAY_PER_REQUEST"
@@ -58,7 +65,6 @@ resource "aws_dynamodb_table" "terraform_locks" {
   )
 }
 
-#import -config=/workspace/confluent-cloud-deploy/dev aws_secretsmanager_secret.confluent_cloud arn:aws:secretsmanager:ap-southeast-2:439904798018:secret:confluent_cloud-HPCUM6
 # Set secret value as
 //  {
 //    "confluent_cloud_key": "XXXX",
