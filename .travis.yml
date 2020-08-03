@@ -16,15 +16,15 @@ before_install:
 
 jobs:
   include:
-    - stage: terraform-state-file-backend 
+    - stage: terraform-state-file-backend
       if: type IN (push) and branch = master
       script:
         - echo "Creating Terraform State file Backend"
-        - cd terraform-state-file-backend 
-        - make init
-        - make import
-        - make plan
-        - make apply
+        - cd terraform-state-file-backend
+        - make -s init
+        - make -s import
+        - make -s plan
+        - make -s apply
         - cd ..
     - stage: terraform plan
       # Only run terraform validate and plan state if within a pull request

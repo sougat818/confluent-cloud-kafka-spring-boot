@@ -13,10 +13,10 @@ init:
 
 .PHONY: import
 import:
-	$(terraform_docker) import -config=/workspace/ aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state || echo "Assuming new environment creation"
-	$(terraform_docker) import -config=/workspace/ aws_secretsmanager_secret.confluent_cloud $(secrets_arn) || echo "Assuming new environment creation"
-	$(terraform_docker) import -config=/workspace/ aws_s3_bucket_public_access_block.terraform_state github-sougat818-confluent-cloud-aws-terraform-state  || echo "Assuming new environment creation"
-	$(terraform_docker) import -config=/workspace/ aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks  || echo "Assuming new environment creation"
+	$(terraform_docker) import -config=/workspace/ aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket"
+	$(terraform_docker) import -config=/workspace/ aws_secretsmanager_secret.confluent_cloud $(secrets_arn) > /dev/null 2>&1 || echo "Assuming new environment creation for secrets"
+	$(terraform_docker) import -config=/workspace/ aws_s3_bucket_public_access_block.terraform_state github-sougat818-confluent-cloud-aws-terraform-state  > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket access"
+	$(terraform_docker) import -config=/workspace/ aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks  > /dev/null 2>&1 || echo "Assuming new environment creation for dynamodb"
 
 .PHONY: plan
 plan:
@@ -34,4 +34,4 @@ clean:
 # Not enabled for CI
 destroy:
 	echo "Not enabled for CI"
-	$(terraform_docker) destroy  -input=false -auto-approve
+	# $(terraform_docker) destroy  -input=false -auto-approve
