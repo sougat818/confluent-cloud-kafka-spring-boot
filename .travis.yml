@@ -24,7 +24,7 @@ jobs:
         - make init
         - make import
         - make plan
-	- make apply
+        - make apply
         - cd ..
     - stage: terraform plan
       # Only run terraform validate and plan state if within a pull request
