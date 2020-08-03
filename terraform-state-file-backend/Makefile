@@ -12,7 +12,8 @@ init:
 .PHONY: import
 import:
 	#  import -config=/workspace/${terraform_prefix}  aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
-	$(terraform_docker) import -config=/workspace/${terraform_prefix} aws_secretsmanager_secret.confluent_cloud $($(aws_docker) --region=ap-southeast-2 secretsmanager describe-secret --secret-id github-sougat818-confluent-cloud-admin | $(jq_docker) -r .ARN)
+	aws_secret_arn := $(aws_docker) --region=ap-southeast-2 secretsmanager describe-secret --secret-id github-sougat818-confluent-cloud-admin | $(jq_docker) -r .ARN
+	$(terraform_docker) import -config=/workspace/${terraform_prefix} aws_secretsmanager_secret.confluent_cloud $(aws_secret_arn)
 	# terraform import -config=. aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 	# terraform import -config=. aws_s3_bucket_public_access_block.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 	# terraform import -config=. aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks
