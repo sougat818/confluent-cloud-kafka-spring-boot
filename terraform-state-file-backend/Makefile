@@ -15,7 +15,6 @@ init:
 import:
 	$(terraform_docker) import -config=/workspace/ aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 	$(terraform_docker) import -config=/workspace/ aws_secretsmanager_secret.confluent_cloud $(secrets_arn)
-	$(terraform_docker) import -config=/workspace/ aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 	$(terraform_docker) import -config=/workspace/ aws_s3_bucket_public_access_block.terraform_state github-sougat818-confluent-cloud-aws-terraform-state
 	$(terraform_docker) import -config=/workspace/ aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks
 
