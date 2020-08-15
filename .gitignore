@@ -1,3 +1,8 @@
+
+# Created by https://www.toptal.com/developers/gitignore/api/terraform,gradle
+# Edit at https://www.toptal.com/developers/gitignore?templates=terraform,gradle
+
+### Terraform ###
 # Local .terraform directories
 **/.terraform/*
 
@@ -22,8 +27,31 @@ override.tf.json
 *_override.tf.json
 
 # Include override files you do wish to add to version control using negated pattern
-#
 # !example_override.tf
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
+
+# End of https://www.toptal.com/developers/gitignore/api/terraform,gradle
+
+# Ignore Gradle build output directory
+build
