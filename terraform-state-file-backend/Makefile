@@ -1,37 +1,25 @@
-terraform_prefix := "terraform-state-file-backend"
-
-terraform_docker := docker run -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --rm --name $(terraform_prefix) -v ${PWD}:/workspace -w /workspace  $(terraform_prefix)/terraform:latest
-aws_docker := docker run -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --rm --name aws_docker amazon/aws-cli
-jq_docker := docker run -i stedolan/jq 
-
-secrets_arn := $(shell $(aws_docker) --region=ap-southeast-2 secretsmanager describe-secret --secret-id github-sougat818-confluent-cloud-admin | $(jq_docker) -r .ARN)
+prefix := com-github-sougat818-confluent-cloud-aws
+region := ap-southeast-2
 
 .PHONY: init
 init:
-	docker build . -t $(terraform_prefix)/terraform
-	$(terraform_docker) init	
+	@terraform init	
 
 .PHONY: import
 import:
-	$(terraform_docker) import -config=/workspace/ aws_s3_bucket.terraform_state github-sougat818-confluent-cloud-aws-terraform-state > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket"
-	$(terraform_docker) import -config=/workspace/ aws_secretsmanager_secret.confluent_cloud $(secrets_arn) > /dev/null 2>&1 || echo "Assuming new environment creation for secrets"
-	$(terraform_docker) import -config=/workspace/ aws_s3_bucket_public_access_block.terraform_state github-sougat818-confluent-cloud-aws-terraform-state  > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket access"
-	$(terraform_docker) import -config=/workspace/ aws_dynamodb_table.terraform_locks github-sougat818-confluent-cloud-aws-terraform-state-locks  > /dev/null 2>&1 || echo "Assuming new environment creation for dynamodb"
+	@terraform import -config=. aws_s3_bucket.terraform_state $(prefix)-terraform-state > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket"
+	@terraform import -config=. aws_s3_bucket_public_access_block.terraform_state $(prefix)-terraform-state  > /dev/null 2>&1 || echo "Assuming new environment creation for s3 bucket access"
+	@terraform import -config=. aws_dynamodb_table.terraform_locks $(prefix)-terraform-state-locks  > /dev/null 2>&1 || echo "Assuming new environment creation for dynamodb"
 
 .PHONY: plan
 plan:
-	$(terraform_docker) plan
+	@terraform plan -var="prefix=$(prefix)"
 
 .PHONY: apply
 apply:
-	$(terraform_docker) apply  -input=false -auto-approve
-
-.PHONY: clean
-clean:
-	docker rmi $(terraform_prefix)/terraform
+	@terraform apply -var="prefix=$(prefix)" -input=false -auto-approve
 
 .PHONY: destroy
 # Not enabled for CI
 destroy:
-	echo "Not enabled for CI"
-	# $(terraform_docker) destroy  -input=false -auto-approve
+	@terraform destroy -var="prefix=$(prefix)" -input=false -auto-approve
