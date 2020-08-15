@@ -1,5 +1,5 @@
 plugins {
-      id("com.github.rmee.terraform") version "1.1.20200614081240"
+      id("org.ysb33r.terraform") version "0.9.0"
 }
 
 repositories {
