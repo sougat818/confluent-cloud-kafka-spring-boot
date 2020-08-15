@@ -1,3 +1,7 @@
+variable "prefix" {
+  type = string
+}
+
 provider "aws" {
   region  = "ap-southeast-2"
   version = "~> 3.0"
@@ -21,7 +25,7 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "github-sougat818-confluent-cloud-aws-terraform-state"
+  bucket = "${var.prefix}-terraform-state"
   versioning {
     enabled = true
   }
@@ -50,30 +54,13 @@ resource "aws_s3_bucket" "terraform_state" {
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {
-  name         = "github-sougat818-confluent-cloud-aws-terraform-state-locks"
+  name         = "${var.prefix}-terraform-state-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
   attribute {
     name = "LockID"
     type = "S"
   }
-  tags = merge(
-    var.default_tags,
-    {
-      Env = "dev"
-    },
-  )
-}
-
-# Set secret value as
-//  {
-//    "confluent_cloud_key": "XXXX",
-//    "confluent_cloud_secret": "XXXX"
-//  }
-resource "aws_secretsmanager_secret" "confluent_cloud" {
-  name                    = "github-sougat818-confluent-cloud-admin"
-  recovery_window_in_days = 0
-  description             = "key and secret for confluent cloud with cluster creation access"
   tags = merge(
     var.default_tags,
     {
