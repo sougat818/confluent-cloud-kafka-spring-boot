@@ -1,6 +1,5 @@
 variable "prefix" {
   type = string
-  default = "com-github-sougat818-confluent-cloud-kafka-spring-boot"
 }
 
 provider "aws" {
