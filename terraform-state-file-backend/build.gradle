@@ -11,6 +11,6 @@ repositories {
 terraform {
     useAwsEnvironment() 
     variables {
-        var 'prefix', 'confluent'
+        var 'prefix', 'confluent-cloud'
     }
 }
