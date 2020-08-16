@@ -3,4 +3,4 @@ FROM gitpod/workspace-full
 RUN brew install terraform
 
 USER gitpod
-RUN echo "function gi() { }"
+RUN echo "function gi() { }" >> ~/.bashrc && source ~/.bashrc
