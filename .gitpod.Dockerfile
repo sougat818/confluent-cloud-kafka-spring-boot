@@ -12,5 +12,5 @@ RUN sudo apt-get -y upgrade
 RUN sudo apt-get -y dist-upgrade
 RUN DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get -y install ubuntu-release-upgrader-core
-RUN sudo do-release-upgrade -c -y 
+RUN sudo do-release-upgrade -c 
 RUN sudo apt-get -y install podman
