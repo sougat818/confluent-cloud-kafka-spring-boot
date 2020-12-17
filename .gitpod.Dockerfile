@@ -8,10 +8,10 @@ RUN echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontai
 RUN curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.10/Release.key
 RUN sudo mkdir /etc/update-manager/
 RUN sudo sh -c 'echo normal > /etc/update-manager/release-upgrades'
-RUN sudo apt-get update && \
-    sudo apt-get -y upgrade && \
-    sudo apt-get -y install ubuntu-release-upgrader-core && \
-    sudo apt-get -y dist-upgrade && \
-    sudo dpkg ––configure –a && \
-    sudo do-release-upgrade -c && \
-    sudo apt-get -y install podman
+RUN sudo apt-get update 
+RUN sudo apt-get -y upgrade 
+RUN sudo apt-get -y install ubuntu-release-upgrader-core
+RUN sudo apt-get -y dist-upgrade
+RUN sudo dpkg ––configure –a 
+RUN sudo do-release-upgrade -c 
+RUN sudo apt-get -y install podman
