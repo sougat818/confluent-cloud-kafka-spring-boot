@@ -41,4 +41,16 @@ RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -q
     && { [ -z "$notOwnedFile" ] \
         || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
 
-RUN sudo apt-get -y install podman
+
+### Podman ###
+RUN . /etc/os-release
+RUN echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.10/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+RUN curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.10/Release.key | sudo apt-key add -
+RUN sudo apt-get update -qq
+RUN sudo apt-get -qq -y install podman
+# Install network
+RUN sudo mkdir -p /etc/cni/net.d
+RUN curl -qsSL https://raw.githubusercontent.com/containers/libpod/master/cni/87-podman-bridge.conflist | sudo tee /etc/cni/net.d/87-podman-bridge.conf
+RUN curl -qsSL https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz --output /tmp/cni.tgz
+RUN sudo mkdir -p /usr/libexec/cni
+RUN sudo tar -C /usr/libexec/cni -xvzf /tmp/cni.tgz
