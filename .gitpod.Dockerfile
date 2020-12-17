@@ -2,4 +2,5 @@ FROM gitpod/workspace-full
 
 RUN brew install kind
 
-RUN apt-get -y install podman
+RUN sudo apt-get update && \
+    sudo apt-get -y install podman
