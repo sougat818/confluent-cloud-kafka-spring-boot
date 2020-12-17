@@ -40,3 +40,5 @@ RUN sudo echo "Running 'sudo' for Gitpod: success"
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
     && { [ -z "$notOwnedFile" ] \
         || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
+
+RUN sudo apt-get -y install podman
