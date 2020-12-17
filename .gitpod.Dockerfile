@@ -9,4 +9,5 @@ RUN curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontaine
 
 RUN sudo apt-get update && \
     sudo apt-get -y upgrade && \
+    sudo do-release-upgrade -c && \
     sudo apt-get -y install podman
