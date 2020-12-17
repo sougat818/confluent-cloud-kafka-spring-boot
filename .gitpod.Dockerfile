@@ -9,5 +9,6 @@ RUN curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontaine
 
 RUN sudo apt-get update && \
     sudo apt-get -y upgrade && \
+    sudo apt-get install ubuntu-release-upgrader-core && \
     sudo do-release-upgrade -c && \
     sudo apt-get -y install podman
