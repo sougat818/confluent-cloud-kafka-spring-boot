@@ -59,3 +59,4 @@ RUN sudo tar -C /usr/libexec/cni -xvzf /tmp/cni.tgz
 RUN sudo curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
 RUN sudo chmod +x ./kind
 RUN sudo mv ./kind /usr/bin/kind
+RUN sudo apt-get -y install libfuse3-dev
