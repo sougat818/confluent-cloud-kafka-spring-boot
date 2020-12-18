@@ -54,3 +54,8 @@ RUN curl -qsSL https://raw.githubusercontent.com/containers/libpod/master/cni/87
 RUN curl -qsSL https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz --output /tmp/cni.tgz
 RUN sudo mkdir -p /usr/libexec/cni
 RUN sudo tar -C /usr/libexec/cni -xvzf /tmp/cni.tgz
+
+
+RUN sudo curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+RUN sudo chmod +x ./kind
+RUN sudo mv ./kind /usr/bin/kind
